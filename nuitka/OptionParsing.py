@@ -1940,6 +1940,7 @@ def _considerGithubWorkflowOptions(phase):
         "enable-plugins",
         "disable-plugin",
         "disable-plugins",
+        "user-plugin",
     )
 
     def filterByName(key):
