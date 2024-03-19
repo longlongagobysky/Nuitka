@@ -537,7 +537,11 @@ def isGccName(cc_name):
 
 
 def isClangName(cc_name):
-    return "clang" in cc_name and "-cl" not in cc_name
+    return ("clang" in cc_name and "-cl" not in cc_name) or isZigName(cc_name)
+
+
+def isZigName(cc_name):
+    return "zig" in cc_name
 
 
 def cheapCopyFile(src, dst):
@@ -609,7 +613,7 @@ def scanSourceDir(env, dirname, plugins):
 
         # Only C files are of interest here.
         if not hasFilenameExtension(
-            filename_base, (".c", "cpp")
+            filename_base, (".c", ".cpp")
         ) or not filename_base.startswith(("module.", "__", "plugin.")):
             continue
 

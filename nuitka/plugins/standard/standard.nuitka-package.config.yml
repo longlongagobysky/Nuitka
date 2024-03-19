@@ -90,6 +90,38 @@
     patterns:
       - 'public.xml'
 
+- module-name: 'antlr4.FileStream' # checksum: b7fe4fce
+  anti-bloat:
+    - description: 'remove unittest reference'
+      replacements_plain:
+        'import unittest': ''
+      change_class:
+        'TestFileStream': 'un-usable'
+
+- module-name: 'antlr4.InputStream' # checksum: e9e7bd9b
+  anti-bloat:
+    - description: 'remove unittest reference'
+      replacements_plain:
+        'import unittest': ''
+      change_class:
+        'TestInputStream': 'un-usable'
+
+- module-name: 'antlr4.IntervalSet' # checksum: 214ba83e
+  anti-bloat:
+    - description: 'remove unittest reference'
+      replacements_plain:
+        'import unittest': ''
+      change_class:
+        'TestIntervalSet': 'un-usable'
+
+- module-name: 'antlr4.Recognizer' # checksum: 6e605dda
+  anti-bloat:
+    - description: 'remove unittest reference'
+      replacements_plain:
+        'import unittest': ''
+      change_class:
+        'Test': 'un-usable'
+
 - module-name: 'anyio._core._eventloop' # checksum: c0b82a1e
   implicit-imports:
     - depends:
@@ -318,12 +350,17 @@
         - 'av.plane'
         - 'av.video.plane'
 
-- module-name: 'babel' # checksum: e320e7f1
+- module-name: 'babel' # checksum: 37b8fa6d
   data-files:
     dirs:
       - 'locale-data'
     patterns:
       - 'global.dat'
+
+  implicit-imports:
+    - depends:
+        - 'babel.dates'
+        - 'babel.numbers'
 
 - module-name: 'backports.zoneinfo._common' # checksum: 70450440
   implicit-imports:
@@ -533,6 +570,13 @@
   implicit-imports:
     - depends:
         - 'urllib.request'
+
+- module-name: 'celery' # checksum: 7d07a2d1
+  anti-bloat:
+    - description: 'remove IPython reference'
+      no-auto-follow:
+        'IPython': 'ignore'
+      when: 'not use_ipython'
 
 - module-name: 'certifi' # checksum: 73df1a1e
   data-files:
@@ -1039,6 +1083,11 @@
     - depends:
         - 'Equation.equation_*'
 
+- module-name: 'eth_utils' # checksum: c62fca1b
+  data-files:
+    dirs:
+      - '__json'
+
 - module-name: 'evaluate.config' # checksum: becc1d28
   anti-bloat:
     - description: 'workaround python version test not compile time recognized'
@@ -1444,6 +1493,31 @@
     patterns:
       - '_cython/_credentials/roots.pem'
 
+- module-name: 'gruut' # checksum: 19583930
+  data-files:
+    patterns:
+      - 'VERSION'
+
+  implicit-imports:
+    - depends:
+        - 'gruut_ipa'
+        - 'gruut_lang_en'
+
+- module-name: 'gruut_ipa' # checksum: 810a705a
+  data-files:
+    dirs:
+      - 'data'
+
+- module-name: 'gruut_lang_en' # checksum: 206e4c65
+  data-files:
+    dirs:
+      - 'espeak'
+      - 'g2p'
+      - 'pos'
+    patterns:
+      - 'VERSION'
+      - 'lexicon.db'
+
 - module-name: 'gtk._gtk' # checksum: 4fb4a03b
   implicit-imports:
     - depends:
@@ -1539,6 +1613,17 @@
   anti-bloat:
     - description: 'workaround hard module import attribute bug'
       append_plain: 'from .utils.tqdm import tqdm'
+
+- module-name: 'hydra' # checksum: 380a0a91
+  data-files:
+    dirs:
+      - 'conf'
+
+- module-name: 'hydra.core.plugins' # checksum: f4d9feae
+  implicit-imports:
+    - depends:
+        - 'hydra._internal.core_plugins.*'
+        - 'hydra_plugins.*'
 
 - module-name: 'imageio.core.imopen' # checksum: 7af58240
   anti-bloat:
@@ -3346,6 +3431,17 @@
     - depends:
         - 'pycparser.yacctab'
         - 'pycparser.lextab'
+
+- module-name: 'pycrfsuite' # checksum: 452bfc81
+  dlls:
+    - from_filenames:
+        prefixes:
+          - '_pycrfsuite'
+
+  implicit-imports:
+    - depends:
+        - 'pycrfsuite._dumpparser'
+        - 'pycrfsuite._logparser'
 
 - module-name: 'pydantic' # checksum: fb2935eb
   implicit-imports:
@@ -6081,10 +6177,12 @@
     dirs:
       - 'resources'
 
-- module-name: 'toga_winforms' # checksum: 286969f5
+- module-name: 'toga_winforms' # checksum: 5dda2bcf
   data-files:
     dirs:
       - 'resources'
+    include-metadata:
+      - 'toga-winforms'
   dlls:
     - from_filenames:
         relative_path: 'libs/WebView2/arm64'
@@ -6666,6 +6764,11 @@
         'from distributed import Client, LocalCluster': 'raise ImportError'
         'from distributed import Client': 'raise ImportError'
       when: 'not use_dask'
+
+- module-name: 'twofish' # checksum: c8ae9b1e
+  implicit-imports:
+    - depends:
+        - '_twofish'
 
 - module-name: 'tzdata' # checksum: dae3c0e3
   data-files:
